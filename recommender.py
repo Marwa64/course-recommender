@@ -1,5 +1,6 @@
 import random
 
+import bson
 import numpy as np
 import pandas as pd
 import warnings
@@ -20,7 +21,7 @@ def recommend_course(skill, user_id):
     rat = ratingsdb.find()
 
     coursesdb = dbname["courses"]
-    cou = coursesdb.find()
+    cou = coursesdb.find({"skills":skill})
 
 
     for item in rat:
@@ -42,7 +43,6 @@ def recommend_course(skill, user_id):
 
     user = dbname["users"].find_one({"user_id": user_id})
 
-
     if user['course_rated'] < 4:
         for i in range(9):
             recommended.append(random.choice(courses))
@@ -54,17 +54,24 @@ def recommend_course(skill, user_id):
 
         X, user_mapper, course_mapper, user_inv_mapper, course_inv_mapper = create_matrix(ratingsdf)
 
+        to_compare = dbname["ratings"].find_one({"user_id": user_id}, sort=[("rating", -1)])
 
-        course_id = "62d32614bd548cf5b91f0ee8"
+        course_id = to_compare["course_id"]
 
         similar_ids = find_similar_courses(course_id, X, course_mapper,course_inv_mapper,k=8)
 
-     #   print(f"Since you watched {course_title}")
         for i in similar_ids:
             item = list(filter(lambda item: item['course_id'] == i, courses))
-            recommended.append(item)
-
-    print(recommended)
+            if(item ==[]):
+                while(True):
+                    x = random.choice(courses)
+                    if(recommended.__contains__(x)):
+                        continue
+                    else:
+                        recommended.append(x)
+                        break
+            else:
+                recommended.append(item)
 
     return recommended
 
@@ -113,4 +120,4 @@ def find_similar_courses(course_id, X,course_mapper,course_inv_mapper, k, metric
         neighbour_ids.pop(0)
         return neighbour_ids
 
-recommend_course("CSS","62731747f166a45c475dbb9a")
+recommend_course("JavaScript","6271d2da16abee6cdd13f89c")
