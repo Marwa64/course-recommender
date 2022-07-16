@@ -32,7 +32,6 @@ def courses():
 
         recomm = recommend_course(payload["skill"], payload["user_id"])
         print(recomm)
-        result_dict = []
 
         return jsonify(recomm)
 
