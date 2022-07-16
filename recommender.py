@@ -20,7 +20,7 @@ def recommend_course(skill, user_id):
     rat = ratingsdb.find()
 
     coursesdb = dbname["courses"]
-    cou = coursesdb.find()
+    cou = coursesdb.find({"skill":skill})
 
 
     for item in rat:
@@ -55,18 +55,15 @@ def recommend_course(skill, user_id):
         X, user_mapper, course_mapper, user_inv_mapper, course_inv_mapper = create_matrix(ratingsdf)
 
 
-
-        course_titles = dict(zip(coursesdf['course_id'], coursesdf['course_name']))
         course_id = "62cf49457510c13118c1e0c0"
-
         similar_ids = find_similar_courses(course_id, X, course_mapper,course_inv_mapper,k=8)
-        course_title = course_titles[course_id]
 
-
-        print(f"Since you watched {course_title}")
+     #   print(f"Since you watched {course_title}")
         for i in similar_ids:
             item = list(filter(lambda item: item['course_id'] == i, courses))
             recommended.append(item)
+
+    print(recommended)
 
     return recommended
 
