@@ -8,7 +8,7 @@ import random
 
 # Scrap indeed for jobs related to the track
 def scrapping(track):
-  path_to_file = "C:/Users\mrawa/PycharmProjects/Jobs Recommedation System/" + track + ".csv"
+  path_to_file = "C:\\Users\\samar\\PycharmProjects\\JobWebScraping\\" + track + ".csv"
   path = Path(path_to_file)
   if path.is_file():
     df = pd.read_csv(path_to_file)
@@ -65,7 +65,7 @@ def job_recommendation(track, payload, number_of_recommendations):
       recommendations.append(recommendation)
 
   else:
-    number_of_jobs = indices.__len__() - 1
+    number_of_jobs = indices.__len__() - 10
     for x in range(11):
       idx = indices[random.randint(0, number_of_jobs)]
       sim_scores = list(enumerate(cosine_similarities[idx]))
