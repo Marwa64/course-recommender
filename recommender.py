@@ -119,5 +119,3 @@ def find_similar_courses(course_id, X,course_mapper,course_inv_mapper, k, metric
             neighbour_ids.append(course_inv_mapper[n])
         neighbour_ids.pop(0)
         return neighbour_ids
-
-recommend_course("JavaScript","6271d2da16abee6cdd13f89c")

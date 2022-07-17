@@ -44,9 +44,9 @@ for skill in skills:
 
         if(count>0):
             c = coursesdb.find_one({"course_url": url})
-            c["skills"].append(skill)
-            print(c)
-            coursesdb.update_one({"course_url": url},{"$set": c })
+            if skill not in c["skills"]:
+                c["skills"].append(skill)
+                coursesdb.update_one({"course_url": url},{"$set": c })
             continue
 
         else:
